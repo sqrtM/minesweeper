@@ -1,0 +1,23 @@
+@font-face {
+  font-family: square;
+  src: url("../public/square.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+body {
+  margin: 0;
+  /* square font by 
+     https://strlen.com/square/*/
+  font-family: square, 'Courier New', Courier, monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  background-color: darkslategrey;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
