@@ -7,8 +7,8 @@ import Tile from './Tile';
 something is deeply wrong with this and it counts everything twice.
 strict mode doesn't allow function declarations inside of functions,
 so I have this fucked up for loop mess. I'm nearly certain that's the
-cause of it. until I can find a solution, I am incrementing each time by 0.5
-to get around the 'counting twice' thing. horrible, i know.
+cause of it. until I can find a solution, I am incrementing each time 
+by 0.5 to get around the 'counting twice' thing. horrible, i know.
 */
 function determineSurroundingbombs(board: square[][]) {
   for (let i = 0; i < board.length; i++) {
