@@ -1,32 +1,27 @@
 import React from 'react';
+import { square } from './Game';
 import './Game.scss';
 import Tile from './Tile';
 
-type square = { isBomb: boolean, surroundings: number }
-
-const bomb: square = {
-  isBomb: true,
-  surroundings: 0,
-}
-
-const notBomb: square = {
-  isBomb: false,
-  surroundings: 0,
-}
-
-function determineSurroundingbombs(board: number[][]) {
-  let objBoard: square[][];
-  for (let i = 1; i < board.length - 1; i++) {
-    for (let j = 0; j < board[i].length - 1; j++) {
-      if (board[i][j] === 1) {
-        for (let k = i - 1; k < i + 1; k++) {
-          for (let l = j - 1; l < j + 1; l++) {
-            if ((k >= 0 && l >= 0) && (k < board.length - 1 && l < board[i].length - 1)) {
-              board[k][l] = board[k][l] + 1;
+/*
+something is deeply wrong with this and it counts everything twice.
+strict mode doesn't allow function declarations inside of functions,
+so I have this fucked up for loop mess. I'm nearly certain that's the
+cause of it. until I can find a solution, I am incrementing each time by 0.5
+to get around the 'counting twice' thing. horrible, i know.
+*/
+function determineSurroundingbombs(board: square[][]) {
+  for (let i = 0; i < board.length; i++) {
+    for (let j = 0; j < board[i].length; j++) {
+      if (board[i][j][0]) {
+        for (let k = i - 1; k <= (i + 1); k++) {
+          for (let l = j - 1; l <= (j + 1); l++) {
+            if ((k >= 0 && l >= 0) && (k < board.length && l < board[k].length)) {
+              console.log(board[k][l][1], j, l)
+              board[k][l][1] = board[k][l][1] + 0.5;
             }
           }
         }
-        board[i][j] = 0;
       }
     }
   }
@@ -34,22 +29,37 @@ function determineSurroundingbombs(board: number[][]) {
 }
 
 export interface IBoardProps {
-  boardArray: number[][],
+  boardArray: square[][],
 }
 
 
 export default class Board extends React.Component<IBoardProps> {
+  constructor(props: IBoardProps) {
+    super(props);
+
+    this.tileClicked = this.tileClicked.bind(this)
+  }
 
 
   newBoard = determineSurroundingbombs(this.props.boardArray);
 
+  tileClicked = (i: number, j: number) => {
+    this.newBoard[i][j][2] = true;
+  }
+
   public render() {
     return (
       <div id='Board'>
-        {this.props.boardArray.map((i, index) => {
+        {this.newBoard.map((i, index) => {
           return (
             <div key={`key-${index}`}>
-              {(this.props.boardArray[index].map(j => <Tile value={j} />))}
+              {(this.newBoard[index].map((j, jndex) => 
+              <Tile 
+              isBomb={j[0]} 
+              surroundings={j[1]} 
+              coordinates={[index, jndex]}
+              clickTile={this.tileClicked(index, jndex)}
+              />))}
             </div>
           );
         })}
