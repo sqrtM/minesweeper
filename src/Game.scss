@@ -10,6 +10,22 @@
   font-size: xx-large;
 }
 
+#Inputs {
+  display: grid;
+  justify-content: center;
+  justify-items: center;
+  grid-column-start: 2;
+  grid-column-end: five;
+  grid-row-start: row1-start;
+  grid-row-end: 3;  
+}
+
+#HUD {
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+}
+
 #Board {
   border: 2px solid black;
 }

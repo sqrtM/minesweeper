@@ -17,7 +17,6 @@ function determineSurroundingbombs(board: square[][]) {
         for (let k = i - 1; k <= (i + 1); k++) {
           for (let l = j - 1; l <= (j + 1); l++) {
             if ((k >= 0 && l >= 0) && (k < board.length && l < board[k].length)) {
-              console.log(board[k][l][1], j, l)
               board[k][l][1] = board[k][l][1] + 0.5;
             }
           }
@@ -30,6 +29,8 @@ function determineSurroundingbombs(board: square[][]) {
 
 export interface IBoardProps {
   boardArray: square[][],
+  flagged: Function,
+  firstClick: Function,
 }
 
 
@@ -41,7 +42,17 @@ export default class Board extends React.Component<IBoardProps> {
 
   newBoard = determineSurroundingbombs(this.props.boardArray);
 
+  shouldComponentUpdate(nextProps: { boardArray: square[][]; }): boolean {
+    if (nextProps.boardArray !== this.props.boardArray) {
+      this.newBoard = determineSurroundingbombs(this.props.boardArray);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   tileClicked = (i: number, j: number, s: number, r: string) => {
+    this.props.firstClick();
     if (r === 'click') {
       if (!s) {
         for (let k = i - 1; k <= (i + 1); k++) {
@@ -57,13 +68,12 @@ export default class Board extends React.Component<IBoardProps> {
         }
         this.newBoard[i][j][2] = true;
       }
-
       this.newBoard[i][j][2] = true;
-
       this.forceUpdate();
       return this.newBoard;
     } else {
       this.newBoard[i][j][3] = !this.newBoard[i][j][3];
+      this.newBoard[i][j][3] ? this.props.flagged(true) : this.props.flagged(false)
       this.forceUpdate();
       return this.newBoard;
     }
