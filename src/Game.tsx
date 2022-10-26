@@ -1,19 +1,27 @@
 import React from 'react';
 import './Game.scss';
 import Board from './Board';
-                    // bomb  surroundings clicked
-export type square = [boolean, number, boolean];
+
+export type square = [
+  bomb: boolean, 
+  surroundings: number, 
+  clicked: boolean, 
+  flagged: boolean
+];
 
 let buildBoard = (c: number, r: number, b: number) => {
   let arr: square[][] = Array.from({ length: r }, () =>
-    Array.from({ length: c }, () => [false, 0, false] ));
+    Array.from({ length: c }, () => [false, 0, false, false] ));
   let seeds = 0;
   let i = Math.floor(Math.random() * c);
   let j = Math.floor(Math.random() * r);
   while (seeds < b) {
     if (!arr[i][j][0]) {
-    arr[i][j][0]= true;
+      arr[i][j][0] = true;
       seeds++;
+      i = Math.floor(Math.random() * c);
+      j = Math.floor(Math.random() * r);
+    } else {
       i = Math.floor(Math.random() * c);
       j = Math.floor(Math.random() * r);
     }
@@ -22,7 +30,7 @@ let buildBoard = (c: number, r: number, b: number) => {
   return arr;
 };
 
-const abc = buildBoard(9,9,10);
+const abc = buildBoard(20,20,40);
 
 export interface IGameProps {
 }
@@ -41,10 +49,10 @@ export default class Game extends React.Component<IGameProps, IGameState> {
     super(props);
 
     this.state = {
-      col: 9,
-      row: 9,
+      col: 20,
+      row: 20,
 
-      bombs: 10,
+      bombs: 40,
 
       boardArray: [...abc],
     }

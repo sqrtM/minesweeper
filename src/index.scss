@@ -1,4 +1,11 @@
 @font-face {
+  font-family: mine-sweeper;
+  src: url("../public/mine-sweeper.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
   font-family: square;
   src: url("../public/square.ttf");
   font-weight: normal;
@@ -10,11 +17,16 @@ body {
   margin: 0;
   /* square font by 
      https://strlen.com/square/*/
-  font-family: square, 'Courier New', Courier, monospace;
+   font-family:square, 'Courier New', Courier, monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
   background-color: darkslategrey;
+
+  -webkit-user-select: none;
+  -moz-user-select: -moz-none;
+  /* -ms-user-select:none; */
+  user-select: none;
 }
 
 code {

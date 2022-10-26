@@ -36,30 +36,55 @@ export interface IBoardProps {
 export default class Board extends React.Component<IBoardProps> {
   constructor(props: IBoardProps) {
     super(props);
-
     this.tileClicked = this.tileClicked.bind(this)
   }
 
-
   newBoard = determineSurroundingbombs(this.props.boardArray);
 
-  tileClicked = (i: number, j: number) => {
-    this.newBoard[i][j][2] = true;
+  tileClicked = (i: number, j: number, s: number, r: string) => {
+    if (r === 'click') {
+      if (!s) {
+        for (let k = i - 1; k <= (i + 1); k++) {
+          for (let l = j - 1; l <= (j + 1); l++) {
+            if ((k >= 0 && l >= 0) && (k < this.newBoard.length && l < this.newBoard[k].length)) {
+              if (this.newBoard[i][j][1] === 0 && this.newBoard[k][l][2] === false) {
+                this.newBoard[k][l][2] = true;
+                this.tileClicked(k, l, this.newBoard[k][l][1], "click");
+              }
+              this.newBoard[k][l][2] = true;
+            }
+          }
+        }
+        this.newBoard[i][j][2] = true;
+      }
+
+      this.newBoard[i][j][2] = true;
+
+      this.forceUpdate();
+      return this.newBoard;
+    } else {
+      this.newBoard[i][j][3] = !this.newBoard[i][j][3];
+      this.forceUpdate();
+      return this.newBoard;
+    }
   }
 
   public render() {
     return (
-      <div id='Board'>
+      <div id='Board' onContextMenu={(e)=> e.preventDefault()}>
         {this.newBoard.map((i, index) => {
           return (
-            <div key={`key-${index}`}>
-              {(this.newBoard[index].map((j, jndex) => 
-              <Tile 
-              isBomb={j[0]} 
-              surroundings={j[1]} 
-              coordinates={[index, jndex]}
-              clickTile={this.tileClicked(index, jndex)}
-              />))}
+            <div key={`key-${index}`} className='BoardRow'>
+              {(this.newBoard[index].map((j, jndex) =>
+                <Tile
+                  key={`key-${jndex}`}
+                  isBomb={j[0]}
+                  surroundings={j[1]}
+                  clicked={j[2]}
+                  coordinates={[index, jndex]}
+                  flagged={j[3]}
+                  clickTile={this.tileClicked}
+                />))}
             </div>
           );
         })}

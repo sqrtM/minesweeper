@@ -13,3 +13,11 @@
 #Board {
   border: 2px solid black;
 }
+
+.BoardRow {
+  display: flex;
+}
+
+.Tile {
+  border: 2px solid black
+}
