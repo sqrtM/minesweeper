@@ -14,6 +14,7 @@ by 0.5 to get around the 'counting twice' thing. horrible, i know.
 EDIT : for some reason, it works as normal on the production build, but
 not on the regular npm start build. extremely odd. 
 */
+
 function determineSurroundingbombs(board: square[][]) {
   for (let i = 0; i < board.length; i++) {
     for (let j = 0; j < board[i].length; j++) {
@@ -21,7 +22,7 @@ function determineSurroundingbombs(board: square[][]) {
         for (let k = i - 1; k <= (i + 1); k++) {
           for (let l = j - 1; l <= (j + 1); l++) {
             if ((k >= 0 && l >= 0) && (k < board.length && l < board[k].length)) {
-              board[k][l][1] = board[k][l][1]++;
+              board[k][l][1] = board[k][l][1] + 0.5;
             }
           }
         }
